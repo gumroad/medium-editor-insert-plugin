@@ -58,8 +58,7 @@ module.exports = function (grunt) {
                         'node_modules/handlebars/handlebars.runtime.min.js',
                         'node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js',
                         'node_modules/blueimp-file-upload/js/jquery.iframe-transport.js',
-                        'node_modules/blueimp-file-upload/js/jquery.fileupload.js',
-                        'node_modules/jquery-sortable/source/js/jquery-sortable-min.js'
+                        'node_modules/blueimp-file-upload/js/jquery.fileupload.js'
                     ],
                     template: require('grunt-template-jasmine-istanbul'),
                     templateOptions: {
@@ -156,7 +155,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('test', ['jscs', 'jshint', 'jasmine']);
-    grunt.registerTask('js', ['test', 'handlebars', 'concat', 'uglify']);
+    grunt.registerTask('js', ['handlebars', 'concat', 'uglify']);
     grunt.registerTask('css', ['sass', 'autoprefixer', 'csso', 'usebanner']);
     grunt.registerTask('default', ['js', 'css']);
 };

@@ -34,10 +34,9 @@
     "videos"
   ],
   "dependencies": {
-    "blueimp-file-upload": "^9.28.0",
+    "blueimp-file-upload": "^9.30.0",
     "handlebars": "^4.0.12",
     "jquery": ">=1.9.0",
-    "jquery-sortable": "~0.9.12",
     "medium-editor": "^5.15.0"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['jquery', 'handlebars', 'medium-editor', 'blueimp-file-upload', 'jquery-sortable'], factory);
+        define(['jquery', 'handlebars', 'medium-editor', 'blueimp-file-upload'], factory);
     } else if (typeof module === 'object' && module.exports) {
         module.exports = function (jQuery) {
             if (typeof window === 'undefined') {
@@ -14,7 +14,6 @@
 
             Handlebars = require('handlebars');
             MediumEditor = require('medium-editor');
-            require('jquery-sortable');
             require('blueimp-file-upload');
 
             factory(jQuery, Handlebars, MediumEditor);

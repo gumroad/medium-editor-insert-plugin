@@ -9,7 +9,7 @@
 
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['jquery', 'handlebars', 'medium-editor', 'blueimp-file-upload', 'jquery-sortable'], factory);
+        define(['jquery', 'handlebars', 'medium-editor', 'blueimp-file-upload'], factory);
     } else if (typeof module === 'object' && module.exports) {
         module.exports = function (jQuery) {
             if (typeof window === 'undefined') {
@@ -23,7 +23,6 @@
 
             Handlebars = require('handlebars');
             MediumEditor = require('medium-editor');
-            require('jquery-sortable');
             require('blueimp-file-upload');
 
             factory(jQuery, Handlebars, MediumEditor);
@@ -44,7 +43,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/core-buttons.hbs"] = Handleb
     + container.escapeExpression(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
     + "\" data-action=\"add\" class=\"medium-insert-action\" type=\"button\">"
     + ((stack1 = ((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "</button></li>\n";
+    + "</button><input type=\"file\" id=\"medium-insert-file-selector\"></li>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
@@ -56,7 +55,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/core-buttons.hbs"] = Handleb
 this["MediumInsert"]["Templates"]["src/js/templates/core-caption.hbs"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper;
 
-  return "<figcaption contenteditable=\"true\" class=\"medium-insert-caption-placeholder\" data-placeholder=\""
+  return "<p class=\"figcaption\" contenteditable=\"true\" class=\"medium-insert-caption-placeholder\" data-placeholder=\""
     + container.escapeExpression(((helper = (helper = helpers.placeholder || (depth0 != null ? depth0.placeholder : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"placeholder","hash":{},"data":data}) : helper)))
     + "\"></figcaption>";
 },"useData":true});
@@ -103,10 +102,6 @@ this["MediumInsert"]["Templates"]["src/js/templates/embeds-wrapper.hbs"] = Handl
   return "<div class=\"medium-insert-embeds\" contenteditable=\"false\">\n	<figure>\n		<div class=\"medium-insert-embed\">\n			"
     + ((stack1 = ((helper = (helper = helpers.html || (depth0 != null ? depth0.html : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"html","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\n		</div>\n	</figure>\n	<div class=\"medium-insert-embeds-overlay\"></div>\n</div>";
-},"useData":true});
-
-this["MediumInsert"]["Templates"]["src/js/templates/images-fileupload.hbs"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<input type=\"file\" multiple>";
 },"useData":true});
 
 this["MediumInsert"]["Templates"]["src/js/templates/images-image.hbs"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -1637,20 +1632,6 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
                 }
             },
             sorting: function () {
-                var that = this;
-
-                $('.medium-insert-images').sortable({
-                    group: 'medium-insert-images',
-                    containerSelector: '.medium-insert-images',
-                    itemSelector: 'figure',
-                    placeholder: '<figure class="placeholder">',
-                    handle: 'img',
-                    nested: false,
-                    vertical: false,
-                    afterMove: function () {
-                        that.core.triggerInput();
-                    }
-                });
             },
             messages: {
                 acceptFileTypesError: 'This file is not in a supported format: ',
