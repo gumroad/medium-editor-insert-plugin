@@ -1,5 +1,5 @@
 /*! 
- * medium-editor-insert-plugin v2.5.1 - jQuery insert plugin for MediumEditor
+ * medium-editor-insert-plugin v2.5.3 - jQuery insert plugin for MediumEditor
  *
  * http://linkesch.com/medium-editor-insert-plugin
  * 
@@ -9,7 +9,7 @@
 
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['jquery', 'handlebars/runtime', 'medium-editor', 'blueimp-file-upload', 'jquery-sortable'], factory);
+        define(['jquery', 'handlebars', 'medium-editor', 'blueimp-file-upload', 'jquery-sortable'], factory);
     } else if (typeof module === 'object' && module.exports) {
         module.exports = function (jQuery) {
             if (typeof window === 'undefined') {
