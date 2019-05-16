@@ -281,6 +281,9 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
             .on('selectstart mousedown', '.medium-insert, .medium-insert-buttons', $.proxy(this, 'disableSelection'))
             .on('click', '.medium-insert-buttons-show', $.proxy(this, 'toggleAddons'))
             .on('click', '.medium-insert-action', $.proxy(this, 'addonAction'))
+            .on('mousedown', '.medium-insert-images img', function () {
+                return false;
+            })
             .on('paste', '.medium-insert-caption-placeholder', function (e) {
                 $.proxy(that, 'removeCaptionPlaceholder')($(e.target));
             });
@@ -592,8 +595,10 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
                 // If buttons are displayed on addon paragraph, wait 100ms for possible captions to display
                 setTimeout(function () {
-                    that.positionButtons(activeAddon);
-                    that.showButtons(activeAddon);
+                    if (!activeAddon) {
+                        that.positionButtons(activeAddon);
+                        that.showButtons(activeAddon);
+                    }
                 }, activeAddon ? 100 : 0);
             } else {
                 this.hideButtons();
@@ -645,7 +650,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
     Core.prototype.positionButtons = function (activeAddon) {
         var $buttons = this.$el.find('.medium-insert-buttons'),
             $p = this.$el.find('.medium-insert-active'),
-            $lastCaption = $p.hasClass('medium-insert-images-grid') ? [] : $p.find('figure:last figcaption'),
+            $lastCaption = $p.hasClass('medium-insert-images-grid') ? [] : $p.find('figure:last p.figcaption'),
             elementsContainer = this.getEditor() ? this.getEditor().options.elementsContainer : $('body').get(0),
             elementsContainerAbsolute = ['absolute', 'fixed'].indexOf(window.getComputedStyle(elementsContainer).getPropertyValue('position')) > -1,
             position = {};
@@ -753,7 +758,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
      */
 
     Core.prototype.addCaption = function ($el, placeholder) {
-        var $caption = $el.find('figcaption');
+        var $caption = $el.find('p.figcaption');
 
         if ($caption.length === 0) {
             $el.append(this.templates['src/js/templates/core-caption.hbs']({
@@ -770,7 +775,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
      */
 
     Core.prototype.removeCaptions = function ($ignore) {
-        var $captions = this.$el.find('figcaption');
+        var $captions = this.$el.find('p.figcaption');
 
         if ($ignore) {
             $captions = $captions.not($ignore);
@@ -791,7 +796,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
      */
 
     Core.prototype.removeCaptionPlaceholder = function ($el) {
-        var $caption = $el.is('figcaption') ? $el : $el.find('figcaption');
+        var $caption = $el.is('p.figcaption') ? $el : $el.find('p.figcaption');
 
         if ($caption.length) {
             $caption
@@ -986,7 +991,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
                 $embeds = $data.find('.medium-insert-embeds');
 
             $embeds.removeAttr('contenteditable');
-            $embeds.find('figcaption').removeAttr('contenteditable');
+            $embeds.find('p.figcaption').removeAttr('contenteditable');
             $data.find('.medium-insert-embeds-overlay').remove();
 
             data[key].value = $data.html();
@@ -1364,9 +1369,9 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
         if ($el.hasClass('medium-insert-embeds-selected')) {
             $embed.not($el).removeClass('medium-insert-embeds-selected');
             $('.medium-insert-embeds-toolbar, .medium-insert-embeds-toolbar2').remove();
-            this.core.removeCaptions($el.find('figcaption'));
+            this.core.removeCaptions($el.find('p.figcaption'));
 
-            if ($(e.target).is('.medium-insert-caption-placeholder') || $(e.target).is('figcaption')) {
+            if ($(e.target).is('.medium-insert-caption-placeholder') || $(e.target).is('p.figcaption')) {
                 $el.removeClass('medium-insert-embeds-selected');
                 this.core.removeCaptionPlaceholder($el.find('figure'));
             }
@@ -1378,7 +1383,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
         if ($(e.target).is('.medium-insert-caption-placeholder')) {
             this.core.removeCaptionPlaceholder($el.find('figure'));
-        } else if ($(e.target).is('figcaption') === false) {
+        } else if ($(e.target).is('p.figcaption') === false) {
             this.core.removeCaptions();
         }
     };
@@ -1701,7 +1706,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
     Images.prototype.init = function () {
         var $images = this.$el.find('.medium-insert-images');
 
-        $images.find('figcaption').attr('contenteditable', true);
+        $images.find('p.figcaption').attr('contenteditable', true);
         $images.find('figure').attr('contenteditable', false);
 
         this.events();
@@ -1757,7 +1762,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
         $.each(data, function (key) {
             var $data = $('<div />').html(data[key].value);
 
-            $data.find('.medium-insert-images').find('figcaption, figure').removeAttr('contenteditable');
+            $data.find('.medium-insert-images').find('p.figcaption, figure').removeAttr('contenteditable');
             $data.find('.medium-insert-images-progress').remove();
 
             data[key].value = $data.html();
@@ -1801,7 +1806,9 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
         $file.fileupload($.extend(true, {}, this.options.fileUploadOptions, fileUploadOptions));
 
-        $file.click();
+        if (!$file.data('skipDialog')) {
+            $file.click();
+        }
     };
 
     /**
@@ -1858,6 +1865,8 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
         if (this.options.preview === false && $place.find('progress').length === 0 && (new XMLHttpRequest().upload)) {
             $place.append(this.templates['src/js/templates/images-progressbar.hbs']());
         }
+
+        $(e.target).fileupload();
 
         if (data.autoUpload || (data.autoUpload !== false && $(e.target).fileupload('option', 'autoUpload'))) {
             data.process().done(function () {
@@ -1955,10 +1964,15 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
     Images.prototype.showImage = function (img, data) {
         var $place = this.$el.find('.medium-insert-active'),
             domImage,
-            that;
+            that,
+            tempImageClassName = (data.files[0].name + data.files[0].size).hashCode();
+
 
         // Hide editor's placeholder
         $place.click();
+
+        // Add a unique image class identifier
+        $place.addClass('contains-image-' + tempImageClassName);
 
         // If preview is allowed and preview image already exists,
         // replace it with uploaded image
@@ -2006,6 +2020,8 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
             } else if (this.options.uploadCompleted) {
                 this.options.uploadCompleted(data.context, data);
             }
+
+            this.options.context.trigger('uiNeedsToUploadRichTextImage', data);
         }
 
         this.core.triggerInput();
@@ -2072,7 +2088,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
         if ($el.is('.medium-insert-caption-placeholder')) {
             this.core.removeCaptionPlaceholder($image.closest('figure'));
-        } else if ($el.is('figcaption') === false) {
+        } else if ($el.is('p.figcaption') === false) {
             this.core.removeCaptions();
         }
         this.$currentImage = null;

@@ -1,6 +1,6 @@
 {
-  "name": "medium-editor-insert-plugin",
-  "version": "2.5.1",
+  "name": "medium-editor-insert-plugin-gumroad",
+  "version": "1.0.0",
   "description": "jQuery insert plugin for MediumEditor",
   "main": "dist/js/medium-editor-insert-plugin.js",
   "homepage": "http://linkesch.com/medium-editor-insert-plugin",
@@ -65,5 +65,6 @@
     "contributors:init": "all-contributors init",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate"
-  }
+  },
+  "private": true
 }
