@@ -1,5 +1,5 @@
 /*! 
- * medium-editor-insert-plugin v2.5.1 - jQuery insert plugin for MediumEditor
+ * medium-editor-insert-plugin-gumroad v2.5.3 - jQuery insert plugin for MediumEditor
  *
  * http://linkesch.com/medium-editor-insert-plugin
  * 
@@ -21,7 +21,7 @@
             }
             window.jQuery = jQuery;
 
-            Handlebars = require('handlebars');
+            Handlebars = require('handlebars/runtime');
             MediumEditor = require('medium-editor');
             require('jquery-sortable');
             require('blueimp-file-upload');
