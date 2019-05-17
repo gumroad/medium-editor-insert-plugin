@@ -53,13 +53,12 @@ module.exports = function (grunt) {
                     specs: ['spec/*.spec.js'],
                     helpers: 'spec/helpers/*.js',
                     vendor: [
-                        'bower_components/jquery/dist/jquery.min.js',
-                        'bower_components/medium-editor/dist/js/medium-editor.min.js',
-                        'bower_components/handlebars/handlebars.runtime.min.js',
-                        'bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js',
-                        'bower_components/blueimp-file-upload/js/jquery.iframe-transport.js',
-                        'bower_components/blueimp-file-upload/js/jquery.fileupload.js',
-                        'bower_components/jquery-sortable/source/js/jquery-sortable-min.js'
+                        'node_modules/jquery/dist/jquery.min.js',
+                        'node_modules/medium-editor/dist/js/medium-editor.min.js',
+                        'node_modules/handlebars/handlebars.runtime.min.js',
+                        'node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js',
+                        'node_modules/blueimp-file-upload/js/jquery.iframe-transport.js',
+                        'node_modules/blueimp-file-upload/js/jquery.fileupload.js'
                     ],
                     template: require('grunt-template-jasmine-istanbul'),
                     templateOptions: {
@@ -156,7 +155,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('test', ['jscs', 'jshint', 'jasmine']);
-    grunt.registerTask('js', ['test', 'handlebars', 'concat', 'uglify']);
+    grunt.registerTask('js', ['handlebars', 'concat', 'uglify']);
     grunt.registerTask('css', ['sass', 'autoprefixer', 'csso', 'usebanner']);
     grunt.registerTask('default', ['js', 'css']);
 };
