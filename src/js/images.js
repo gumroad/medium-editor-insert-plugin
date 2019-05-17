@@ -54,20 +54,6 @@
                 }
             },
             sorting: function () {
-                var that = this;
-
-                $('.medium-insert-images').sortable({
-                    group: 'medium-insert-images',
-                    containerSelector: '.medium-insert-images',
-                    itemSelector: 'figure',
-                    placeholder: '<figure class="placeholder">',
-                    handle: 'img',
-                    nested: false,
-                    vertical: false,
-                    afterMove: function () {
-                        that.core.triggerInput();
-                    }
-                });
             },
             messages: {
                 acceptFileTypesError: 'This file is not in a supported format: ',
@@ -123,7 +109,7 @@
     Images.prototype.init = function () {
         var $images = this.$el.find('.medium-insert-images');
 
-        $images.find('figcaption').attr('contenteditable', true);
+        $images.find('p.figcaption').attr('contenteditable', true);
         $images.find('figure').attr('contenteditable', false);
 
         this.events();
@@ -179,7 +165,7 @@
         $.each(data, function (key) {
             var $data = $('<div />').html(data[key].value);
 
-            $data.find('.medium-insert-images').find('figcaption, figure').removeAttr('contenteditable');
+            $data.find('.medium-insert-images').find('p.figcaption, figure').removeAttr('contenteditable');
             $data.find('.medium-insert-images-progress').remove();
 
             data[key].value = $data.html();
@@ -196,7 +182,7 @@
 
     Images.prototype.add = function () {
         var that = this,
-            $file = $(this.templates['src/js/templates/images-fileupload.hbs']()),
+            $file = this.$el.find("#medium-insert-file-selector"),
             fileUploadOptions = {
                 dataType: 'json',
                 add: function (e, data) {
@@ -223,7 +209,9 @@
 
         $file.fileupload($.extend(true, {}, this.options.fileUploadOptions, fileUploadOptions));
 
-        $file.click();
+        if (!$file.data('skipDialog')) {
+            $file.click();
+        }
     };
 
     /**
@@ -280,6 +268,8 @@
         if (this.options.preview === false && $place.find('progress').length === 0 && (new XMLHttpRequest().upload)) {
             $place.append(this.templates['src/js/templates/images-progressbar.hbs']());
         }
+
+        $(e.target).fileupload();
 
         if (data.autoUpload || (data.autoUpload !== false && $(e.target).fileupload('option', 'autoUpload'))) {
             data.process().done(function () {
@@ -377,10 +367,15 @@
     Images.prototype.showImage = function (img, data) {
         var $place = this.$el.find('.medium-insert-active'),
             domImage,
-            that;
+            that,
+            tempImageClassName = (data.files[0].name + data.files[0].size).hashCode();
+
 
         // Hide editor's placeholder
         $place.click();
+
+        // Add a unique image class identifier
+        $place.addClass('contains-image-' + tempImageClassName);
 
         // If preview is allowed and preview image already exists,
         // replace it with uploaded image
@@ -428,6 +423,8 @@
             } else if (this.options.uploadCompleted) {
                 this.options.uploadCompleted(data.context, data);
             }
+
+            this.options.context.trigger('uiNeedsToUploadRichTextImage', data);
         }
 
         this.core.triggerInput();
@@ -494,7 +491,7 @@
 
         if ($el.is('.medium-insert-caption-placeholder')) {
             this.core.removeCaptionPlaceholder($image.closest('figure'));
-        } else if ($el.is('figcaption') === false) {
+        } else if ($el.is('p.figcaption') === false) {
             this.core.removeCaptions();
         }
         this.$currentImage = null;

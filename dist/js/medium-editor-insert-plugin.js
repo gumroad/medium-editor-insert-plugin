@@ -1,5 +1,5 @@
 /*! 
- * medium-editor-insert-plugin v2.5.1 - jQuery insert plugin for MediumEditor
+ * medium-editor-insert-plugin v2.5.5 - jQuery insert plugin for MediumEditor
  *
  * http://linkesch.com/medium-editor-insert-plugin
  * 
@@ -9,7 +9,7 @@
 
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['jquery', 'handlebars/runtime', 'medium-editor', 'blueimp-file-upload', 'jquery-sortable'], factory);
+        define(['jquery', 'handlebars', 'medium-editor', 'blueimp-file-upload'], factory);
     } else if (typeof module === 'object' && module.exports) {
         module.exports = function (jQuery) {
             if (typeof window === 'undefined') {
@@ -21,9 +21,8 @@
             }
             window.jQuery = jQuery;
 
-            Handlebars = require('handlebars/runtime');
+            Handlebars = require('handlebars');
             MediumEditor = require('medium-editor');
-            require('jquery-sortable');
             require('blueimp-file-upload');
 
             factory(jQuery, Handlebars, MediumEditor);
@@ -44,7 +43,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/core-buttons.hbs"] = Handleb
     + container.escapeExpression(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
     + "\" data-action=\"add\" class=\"medium-insert-action\" type=\"button\">"
     + ((stack1 = ((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "</button></li>\n";
+    + "</button><input type=\"file\" id=\"medium-insert-file-selector\"></li>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
@@ -56,7 +55,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/core-buttons.hbs"] = Handleb
 this["MediumInsert"]["Templates"]["src/js/templates/core-caption.hbs"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper;
 
-  return "<figcaption contenteditable=\"true\" class=\"medium-insert-caption-placeholder\" data-placeholder=\""
+  return "<p class=\"figcaption\" contenteditable=\"true\" class=\"medium-insert-caption-placeholder\" data-placeholder=\""
     + container.escapeExpression(((helper = (helper = helpers.placeholder || (depth0 != null ? depth0.placeholder : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"placeholder","hash":{},"data":data}) : helper)))
     + "\"></figcaption>";
 },"useData":true});
@@ -103,10 +102,6 @@ this["MediumInsert"]["Templates"]["src/js/templates/embeds-wrapper.hbs"] = Handl
   return "<div class=\"medium-insert-embeds\" contenteditable=\"false\">\n	<figure>\n		<div class=\"medium-insert-embed\">\n			"
     + ((stack1 = ((helper = (helper = helpers.html || (depth0 != null ? depth0.html : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"html","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\n		</div>\n	</figure>\n	<div class=\"medium-insert-embeds-overlay\"></div>\n</div>";
-},"useData":true});
-
-this["MediumInsert"]["Templates"]["src/js/templates/images-fileupload.hbs"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<input type=\"file\" multiple>";
 },"useData":true});
 
 this["MediumInsert"]["Templates"]["src/js/templates/images-image.hbs"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -163,6 +158,8 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
     + "    </ul>\n</div>\n\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.actions : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 },"useData":true});
+window["MediumInsert"] = this["MediumInsert"];
+
 ;(function ($, window, document, undefined) {
 
     'use strict';
@@ -281,6 +278,9 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
             .on('selectstart mousedown', '.medium-insert, .medium-insert-buttons', $.proxy(this, 'disableSelection'))
             .on('click', '.medium-insert-buttons-show', $.proxy(this, 'toggleAddons'))
             .on('click', '.medium-insert-action', $.proxy(this, 'addonAction'))
+            .on('mousedown', '.medium-insert-images img', function () {
+                return false;
+            })
             .on('paste', '.medium-insert-caption-placeholder', function (e) {
                 $.proxy(that, 'removeCaptionPlaceholder')($(e.target));
             });
@@ -592,8 +592,10 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
                 // If buttons are displayed on addon paragraph, wait 100ms for possible captions to display
                 setTimeout(function () {
-                    that.positionButtons(activeAddon);
-                    that.showButtons(activeAddon);
+                    if (!activeAddon) {
+                        that.positionButtons(activeAddon);
+                        that.showButtons(activeAddon);
+                    }
                 }, activeAddon ? 100 : 0);
             } else {
                 this.hideButtons();
@@ -645,7 +647,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
     Core.prototype.positionButtons = function (activeAddon) {
         var $buttons = this.$el.find('.medium-insert-buttons'),
             $p = this.$el.find('.medium-insert-active'),
-            $lastCaption = $p.hasClass('medium-insert-images-grid') ? [] : $p.find('figure:last figcaption'),
+            $lastCaption = $p.hasClass('medium-insert-images-grid') ? [] : $p.find('figure:last p.figcaption'),
             elementsContainer = this.getEditor() ? this.getEditor().options.elementsContainer : $('body').get(0),
             elementsContainerAbsolute = ['absolute', 'fixed'].indexOf(window.getComputedStyle(elementsContainer).getPropertyValue('position')) > -1,
             position = {};
@@ -753,7 +755,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
      */
 
     Core.prototype.addCaption = function ($el, placeholder) {
-        var $caption = $el.find('figcaption');
+        var $caption = $el.find('p.figcaption');
 
         if ($caption.length === 0) {
             $el.append(this.templates['src/js/templates/core-caption.hbs']({
@@ -770,7 +772,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
      */
 
     Core.prototype.removeCaptions = function ($ignore) {
-        var $captions = this.$el.find('figcaption');
+        var $captions = this.$el.find('p.figcaption');
 
         if ($ignore) {
             $captions = $captions.not($ignore);
@@ -791,7 +793,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
      */
 
     Core.prototype.removeCaptionPlaceholder = function ($el) {
-        var $caption = $el.is('figcaption') ? $el : $el.find('figcaption');
+        var $caption = $el.is('p.figcaption') ? $el : $el.find('p.figcaption');
 
         if ($caption.length) {
             $caption
@@ -986,7 +988,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
                 $embeds = $data.find('.medium-insert-embeds');
 
             $embeds.removeAttr('contenteditable');
-            $embeds.find('figcaption').removeAttr('contenteditable');
+            $embeds.find('p.figcaption').removeAttr('contenteditable');
             $data.find('.medium-insert-embeds-overlay').remove();
 
             data[key].value = $data.html();
@@ -1364,9 +1366,9 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
         if ($el.hasClass('medium-insert-embeds-selected')) {
             $embed.not($el).removeClass('medium-insert-embeds-selected');
             $('.medium-insert-embeds-toolbar, .medium-insert-embeds-toolbar2').remove();
-            this.core.removeCaptions($el.find('figcaption'));
+            this.core.removeCaptions($el.find('p.figcaption'));
 
-            if ($(e.target).is('.medium-insert-caption-placeholder') || $(e.target).is('figcaption')) {
+            if ($(e.target).is('.medium-insert-caption-placeholder') || $(e.target).is('p.figcaption')) {
                 $el.removeClass('medium-insert-embeds-selected');
                 this.core.removeCaptionPlaceholder($el.find('figure'));
             }
@@ -1378,7 +1380,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
         if ($(e.target).is('.medium-insert-caption-placeholder')) {
             this.core.removeCaptionPlaceholder($el.find('figure'));
-        } else if ($(e.target).is('figcaption') === false) {
+        } else if ($(e.target).is('p.figcaption') === false) {
             this.core.removeCaptions();
         }
     };
@@ -1632,20 +1634,6 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
                 }
             },
             sorting: function () {
-                var that = this;
-
-                $('.medium-insert-images').sortable({
-                    group: 'medium-insert-images',
-                    containerSelector: '.medium-insert-images',
-                    itemSelector: 'figure',
-                    placeholder: '<figure class="placeholder">',
-                    handle: 'img',
-                    nested: false,
-                    vertical: false,
-                    afterMove: function () {
-                        that.core.triggerInput();
-                    }
-                });
             },
             messages: {
                 acceptFileTypesError: 'This file is not in a supported format: ',
@@ -1701,7 +1689,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
     Images.prototype.init = function () {
         var $images = this.$el.find('.medium-insert-images');
 
-        $images.find('figcaption').attr('contenteditable', true);
+        $images.find('p.figcaption').attr('contenteditable', true);
         $images.find('figure').attr('contenteditable', false);
 
         this.events();
@@ -1757,7 +1745,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
         $.each(data, function (key) {
             var $data = $('<div />').html(data[key].value);
 
-            $data.find('.medium-insert-images').find('figcaption, figure').removeAttr('contenteditable');
+            $data.find('.medium-insert-images').find('p.figcaption, figure').removeAttr('contenteditable');
             $data.find('.medium-insert-images-progress').remove();
 
             data[key].value = $data.html();
@@ -1774,7 +1762,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
     Images.prototype.add = function () {
         var that = this,
-            $file = $(this.templates['src/js/templates/images-fileupload.hbs']()),
+            $file = this.$el.find("#medium-insert-file-selector"),
             fileUploadOptions = {
                 dataType: 'json',
                 add: function (e, data) {
@@ -1801,7 +1789,9 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
         $file.fileupload($.extend(true, {}, this.options.fileUploadOptions, fileUploadOptions));
 
-        $file.click();
+        if (!$file.data('skipDialog')) {
+            $file.click();
+        }
     };
 
     /**
@@ -1858,6 +1848,8 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
         if (this.options.preview === false && $place.find('progress').length === 0 && (new XMLHttpRequest().upload)) {
             $place.append(this.templates['src/js/templates/images-progressbar.hbs']());
         }
+
+        $(e.target).fileupload();
 
         if (data.autoUpload || (data.autoUpload !== false && $(e.target).fileupload('option', 'autoUpload'))) {
             data.process().done(function () {
@@ -1955,10 +1947,15 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
     Images.prototype.showImage = function (img, data) {
         var $place = this.$el.find('.medium-insert-active'),
             domImage,
-            that;
+            that,
+            tempImageClassName = (data.files[0].name + data.files[0].size).hashCode();
+
 
         // Hide editor's placeholder
         $place.click();
+
+        // Add a unique image class identifier
+        $place.addClass('contains-image-' + tempImageClassName);
 
         // If preview is allowed and preview image already exists,
         // replace it with uploaded image
@@ -2006,6 +2003,8 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
             } else if (this.options.uploadCompleted) {
                 this.options.uploadCompleted(data.context, data);
             }
+
+            this.options.context.trigger('uiNeedsToUploadRichTextImage', data);
         }
 
         this.core.triggerInput();
@@ -2072,7 +2071,7 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
         if ($el.is('.medium-insert-caption-placeholder')) {
             this.core.removeCaptionPlaceholder($image.closest('figure'));
-        } else if ($el.is('figcaption') === false) {
+        } else if ($el.is('p.figcaption') === false) {
             this.core.removeCaptions();
         }
         this.$currentImage = null;

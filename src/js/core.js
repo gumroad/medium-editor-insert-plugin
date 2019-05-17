@@ -1,3 +1,5 @@
+window["MediumInsert"] = this["MediumInsert"];
+
 ;(function ($, window, document, undefined) {
 
     'use strict';
@@ -116,6 +118,9 @@
             .on('selectstart mousedown', '.medium-insert, .medium-insert-buttons', $.proxy(this, 'disableSelection'))
             .on('click', '.medium-insert-buttons-show', $.proxy(this, 'toggleAddons'))
             .on('click', '.medium-insert-action', $.proxy(this, 'addonAction'))
+            .on('mousedown', '.medium-insert-images img', function () {
+                return false;
+            })
             .on('paste', '.medium-insert-caption-placeholder', function (e) {
                 $.proxy(that, 'removeCaptionPlaceholder')($(e.target));
             });
@@ -427,8 +432,10 @@
 
                 // If buttons are displayed on addon paragraph, wait 100ms for possible captions to display
                 setTimeout(function () {
-                    that.positionButtons(activeAddon);
-                    that.showButtons(activeAddon);
+                    if (!activeAddon) {
+                        that.positionButtons(activeAddon);
+                        that.showButtons(activeAddon);
+                    }
                 }, activeAddon ? 100 : 0);
             } else {
                 this.hideButtons();
@@ -480,7 +487,7 @@
     Core.prototype.positionButtons = function (activeAddon) {
         var $buttons = this.$el.find('.medium-insert-buttons'),
             $p = this.$el.find('.medium-insert-active'),
-            $lastCaption = $p.hasClass('medium-insert-images-grid') ? [] : $p.find('figure:last figcaption'),
+            $lastCaption = $p.hasClass('medium-insert-images-grid') ? [] : $p.find('figure:last p.figcaption'),
             elementsContainer = this.getEditor() ? this.getEditor().options.elementsContainer : $('body').get(0),
             elementsContainerAbsolute = ['absolute', 'fixed'].indexOf(window.getComputedStyle(elementsContainer).getPropertyValue('position')) > -1,
             position = {};
@@ -588,7 +595,7 @@
      */
 
     Core.prototype.addCaption = function ($el, placeholder) {
-        var $caption = $el.find('figcaption');
+        var $caption = $el.find('p.figcaption');
 
         if ($caption.length === 0) {
             $el.append(this.templates['src/js/templates/core-caption.hbs']({
@@ -605,7 +612,7 @@
      */
 
     Core.prototype.removeCaptions = function ($ignore) {
-        var $captions = this.$el.find('figcaption');
+        var $captions = this.$el.find('p.figcaption');
 
         if ($ignore) {
             $captions = $captions.not($ignore);
@@ -626,7 +633,7 @@
      */
 
     Core.prototype.removeCaptionPlaceholder = function ($el) {
-        var $caption = $el.is('figcaption') ? $el : $el.find('figcaption');
+        var $caption = $el.is('p.figcaption') ? $el : $el.find('p.figcaption');
 
         if ($caption.length) {
             $caption
