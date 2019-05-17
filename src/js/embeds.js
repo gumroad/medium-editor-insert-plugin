@@ -159,7 +159,7 @@
                 $embeds = $data.find('.medium-insert-embeds');
 
             $embeds.removeAttr('contenteditable');
-            $embeds.find('figcaption').removeAttr('contenteditable');
+            $embeds.find('p.figcaption').removeAttr('contenteditable');
             $data.find('.medium-insert-embeds-overlay').remove();
 
             data[key].value = $data.html();
@@ -537,9 +537,9 @@
         if ($el.hasClass('medium-insert-embeds-selected')) {
             $embed.not($el).removeClass('medium-insert-embeds-selected');
             $('.medium-insert-embeds-toolbar, .medium-insert-embeds-toolbar2').remove();
-            this.core.removeCaptions($el.find('figcaption'));
+            this.core.removeCaptions($el.find('p.figcaption'));
 
-            if ($(e.target).is('.medium-insert-caption-placeholder') || $(e.target).is('figcaption')) {
+            if ($(e.target).is('.medium-insert-caption-placeholder') || $(e.target).is('p.figcaption')) {
                 $el.removeClass('medium-insert-embeds-selected');
                 this.core.removeCaptionPlaceholder($el.find('figure'));
             }
@@ -551,7 +551,7 @@
 
         if ($(e.target).is('.medium-insert-caption-placeholder')) {
             this.core.removeCaptionPlaceholder($el.find('figure'));
-        } else if ($(e.target).is('figcaption') === false) {
+        } else if ($(e.target).is('p.figcaption') === false) {
             this.core.removeCaptions();
         }
     };
