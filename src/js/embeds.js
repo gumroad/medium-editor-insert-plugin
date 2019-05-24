@@ -449,6 +449,7 @@
                     html: html
                 }));
                 $place.text($place.text().replace(pastedUrl, ''));
+                $place.after(this.templates['src/js/templates/core-empty-line.hbs']().trim());
             } else {
                 $place.after(this.templates['src/js/templates/embeds-wrapper.hbs']({
                     html: html
@@ -594,39 +595,41 @@
      */
 
     Embeds.prototype.addToolbar = function () {
-        var $embed = this.$el.find('.medium-insert-embeds-selected'),
-            active = false,
-            $toolbar, $toolbar2, mediumEditor, toolbarContainer;
+        if(this.options.toolbar) {
+            var $embed = this.$el.find('.medium-insert-embeds-selected'),
+                active = false,
+                $toolbar, $toolbar2, mediumEditor, toolbarContainer;
 
-        if ($embed.length === 0) {
-            return;
-        }
-
-        mediumEditor = this.core.getEditor();
-        toolbarContainer = mediumEditor.options.elementsContainer || 'body';
-
-        $(toolbarContainer).append(this.templates['src/js/templates/embeds-toolbar.hbs']({
-            styles: this.options.styles,
-            actions: this.options.actions
-        }).trim());
-
-        $toolbar = $('.medium-insert-embeds-toolbar');
-        $toolbar2 = $('.medium-insert-embeds-toolbar2');
-
-        $toolbar.find('button').each(function () {
-            if ($embed.hasClass('medium-insert-embeds-' + $(this).data('action'))) {
-                $(this).addClass('medium-editor-button-active');
-                active = true;
+            if ($embed.length === 0) {
+                return;
             }
-        });
 
-        if (active === false) {
-            $toolbar.find('button').first().addClass('medium-editor-button-active');
+            mediumEditor = this.core.getEditor();
+            toolbarContainer = mediumEditor.options.elementsContainer || 'body';
+
+            $(toolbarContainer).append(this.templates['src/js/templates/embeds-toolbar.hbs']({
+                styles: this.options.styles,
+                actions: this.options.actions
+            }).trim());
+
+            $toolbar = $('.medium-insert-embeds-toolbar');
+            $toolbar2 = $('.medium-insert-embeds-toolbar2');
+
+            $toolbar.find('button').each(function () {
+                if ($embed.hasClass('medium-insert-embeds-' + $(this).data('action'))) {
+                    $(this).addClass('medium-editor-button-active');
+                    active = true;
+                }
+            });
+
+            if (active === false) {
+                $toolbar.find('button').first().addClass('medium-editor-button-active');
+            }
+
+            this.repositionToolbars();
+            $toolbar.fadeIn();
+            $toolbar2.fadeIn();
         }
-
-        this.repositionToolbars();
-        $toolbar.fadeIn();
-        $toolbar2.fadeIn();
     };
 
     Embeds.prototype.autoRepositionToolbars = function () {

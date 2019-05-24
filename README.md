@@ -38,7 +38,7 @@ var tempImageClassName = (data.files[0].name + data.files[0].size).hashCode();
 ...
 $place.addClass(‘contains-image-‘ + tempImageClassName);
 ```
-- The plugin looks for a skip-dialog class around the file upload input before triggering the file uplaod modal. This is so that we can override triggering the native file upload modal in capybara tests; without doing this, the open file modal would block everything. See example in updates_spec in gumroad/web for how we test this.
+- The plugin looks for a skip-dialog class around the file upload input before triggering the file upload modal. This is so that we can override triggering the native file upload modal in capybara tests; without doing this, the open file modal would block everything. See example in updates_spec in gumroad/web for how we test this.
 ```
       find(".js-update-message").base.send_keys(:enter)
       page.execute_script("$('.medium-insert-buttons-show').click();")
@@ -60,4 +60,5 @@ Notable components to look at in gumroad/web:
 
 ## Version history
 
+2.6.1 -- add a disable toolbar option for plugins and fix caret placement after oembed bug
 2.6.0 -- initial updates for Gumroad's implementation of inline images
