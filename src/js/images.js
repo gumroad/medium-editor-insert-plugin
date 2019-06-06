@@ -63,6 +63,7 @@
             // uploadCompleted: function ($el, data) {}
         };
 
+
     /**
      * Images object
      *
@@ -368,7 +369,7 @@
         var $place = this.$el.find('.medium-insert-active'),
             domImage,
             that,
-            tempImageClassName = (data.files[0].name + data.files[0].size).hashCode();
+            tempImageClassName = this.hashCode(data.files[0].name + data.files[0].size);
 
 
         // Hide editor's placeholder
@@ -425,6 +426,28 @@
 
         return data.context;
     };
+
+
+    /**
+     * Generate a unique numeral hash code based on a string
+     *
+     * @param {string} str
+     * @return {string}
+     */
+
+   Images.prototype.hashCode = function(str) {
+        var hash = 0;
+        if (str.length == 0) {
+            return hash;
+        }
+        for (var i = 0; i < str.length; i++) {
+            var char = str.charCodeAt(i);
+            hash = (hash << 5) - hash + char;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash;
+    };
+
 
     Images.prototype.getDOMImage = function () {
         return new window.Image();
