@@ -60,7 +60,7 @@ Notable components to look at in gumroad/web:
 
 ## Version history
 
-2.6.4 -- move hashCode() util to plugin
+2.6.4 -- Add hashCode util function and support onImageSelect callback on context.
 2.6.3 -- recalibrate custom css changes into this repo
 2.6.2 -- remove duplication of input field selector in buttons panel
 2.6.1 -- add a disable toolbar option for plugins and fix caret placement after oembed bug

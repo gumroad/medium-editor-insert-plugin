@@ -1646,7 +1646,6 @@ window["MediumInsert"] = this["MediumInsert"];
             // uploadCompleted: function ($el, data) {}
         };
 
-
     /**
      * Images object
      *
@@ -2002,14 +2001,15 @@ window["MediumInsert"] = this["MediumInsert"];
                 }
             }
 
-            this.options.context.trigger('uiNeedsToUploadRichTextImage', data);
+            if (this.options.onImageSelect) {
+                this.options.onImageSelect.call(this.options.context, data.files[0]);
+            }
         }
 
         this.core.triggerInput();
 
         return data.context;
     };
-
 
     Images.prototype.getDOMImage = function () {
         return new window.Image();
