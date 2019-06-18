@@ -369,7 +369,7 @@
         var $place = this.$el.find('.medium-insert-active'),
             domImage,
             that,
-            tempImageClassName = this.hashCode(data.files[0].name + data.files[0].size);
+            tempImageClassName = hashCode(data.files[0].name + data.files[0].size);
 
 
         // Hide editor's placeholder
@@ -425,27 +425,6 @@
         this.core.triggerInput();
 
         return data.context;
-    };
-
-
-    /**
-     * Generate a unique numeral hash code based on a string
-     *
-     * @param {string} str
-     * @return {string}
-     */
-
-   Images.prototype.hashCode = function(str) {
-        var hash = 0;
-        if (str.length == 0) {
-            return hash;
-        }
-        for (var i = 0; i < str.length; i++) {
-            var char = str.charCodeAt(i);
-            hash = (hash << 5) - hash + char;
-            hash = hash & hash; // Convert to 32bit integer
-        }
-        return hash;
     };
 
 
@@ -803,5 +782,27 @@
             }
         });
     };
+
+
+    /**
+     * Generate a unique numeral hash code based on a string
+     *
+     * @param {string} str
+     * @return {string}
+     */
+
+   function hashCode(str) {
+        var hash = 0;
+        if (str.length == 0) {
+            return hash;
+        }
+        for (var i = 0; i < str.length; i++) {
+            var char = str.charCodeAt(i);
+            hash = (hash << 5) - hash + char;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash;
+    };
+
 
 })(jQuery, window, document, MediumEditor.util);
