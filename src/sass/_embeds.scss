@@ -1,4 +1,7 @@
 .medium-insert-embeds {
+  &:first-child {
+    margin-top: 0;
+  }
   text-align: center;
   margin: 1em 0;
   position: relative;
@@ -25,6 +28,39 @@
     height: 100%;
     top: 0;
     left: 0;
+  }
+  figure {
+    margin: 0;
+    display: block;
+    img {
+      max-width: 100%;
+      margin-top: 1em;
+      vertical-align: top;
+    }
+    &:first-child {
+      img {
+        margin-top: 0;
+      }
+    }
+
+    .figcaption {
+      position: relative;
+      z-index: 1;
+      display: block;
+      text-align: center;
+      font-size: 0.8em;
+      padding-top: 10px;
+      font-style: italic;
+      outline: 0 solid transparent;
+      &:focus {
+        outline: 0 solid transparent;
+      }
+
+      &:empty:after {
+        content: attr(data-placeholder);
+        opacity: 0.4;
+      }
+    }
   }
 }
 
