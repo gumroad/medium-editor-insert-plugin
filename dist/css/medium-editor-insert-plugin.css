@@ -1,5 +1,5 @@
 /*! 
- * medium-editor-insert-plugin v2.6.3 - jQuery insert plugin for MediumEditor
+ * medium-editor-insert-plugin v2.6.5 - jQuery insert plugin for MediumEditor
  *
  * http://linkesch.com/medium-editor-insert-plugin
  * 
@@ -239,6 +239,8 @@
   text-align: center;
   margin: 1em 0;
   position: relative; }
+  .medium-insert-embeds:first-child, .mediumInsert-embeds:first-child {
+    margin-top: 0; }
   .medium-insert-embeds iframe, .mediumInsert-embeds iframe {
     margin: 0 auto !important;
     width: 100%; }
@@ -258,6 +260,29 @@
     height: 100%;
     top: 0;
     left: 0; }
+  .medium-insert-embeds figure, .mediumInsert-embeds figure {
+    margin: 0;
+    display: block; }
+    .medium-insert-embeds figure img, .mediumInsert-embeds figure img {
+      max-width: 100%;
+      margin-top: 1em;
+      vertical-align: top; }
+    .medium-insert-embeds figure:first-child img, .mediumInsert-embeds figure:first-child img {
+      margin-top: 0; }
+    .medium-insert-embeds figure .figcaption, .mediumInsert-embeds figure .figcaption {
+      position: relative;
+      z-index: 1;
+      display: block;
+      text-align: center;
+      font-size: 0.8em;
+      padding-top: 10px;
+      font-style: italic;
+      outline: 0 solid transparent; }
+      .medium-insert-embeds figure .figcaption:focus, .mediumInsert-embeds figure .figcaption:focus {
+        outline: 0 solid transparent; }
+      .medium-insert-embeds figure .figcaption:empty:after, .mediumInsert-embeds figure .figcaption:empty:after {
+        content: attr(data-placeholder);
+        opacity: 0.4; }
 
 .medium-insert-embeds-input {
   position: relative;
