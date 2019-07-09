@@ -574,7 +574,7 @@
                 embeds.push($selectedEmbed);
             }
 
-            // Remove image even if it's not selected, but backspace/del is pressed in text
+            // Remove embed even if it's not selected, but backspace/del is pressed in text
             selection = window.getSelection();
             if (selection && selection.rangeCount) {
                 range = selection.getRangeAt(0);
@@ -594,7 +594,7 @@
                     embeds.push($sibling);
                 }
 
-                // If text is selected, find images in the selection
+                // If text is selected, find embeds in the selection
                 selectedHtml = MediumEditor.selection.getSelectionHtml(document);
                 if (selectedHtml) {
                     $('<div></div>').html(selectedHtml).find('.medium-insert-embeds').each(function () {
