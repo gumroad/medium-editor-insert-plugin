@@ -565,19 +565,54 @@
      */
 
     Embeds.prototype.removeEmbed = function (e) {
-        var $embed, $empty;
+        var embeds = [],
+            $selectedEmbed = this.$el.find('.medium-insert-embeds-selected'),
+            $parent, $empty, selection, range, current, caretPosition, $current, $sibling, selectedHtml, i;
 
         if (e.which === 8 || e.which === 46) {
-            $embed = this.$el.find('.medium-insert-embeds-selected');
+            if ($selectedEmbed.length) {
+                embeds.push($selectedEmbed);
+            }
 
-            if ($embed.length) {
+            // Remove image even if it's not selected, but backspace/del is pressed in text
+            selection = window.getSelection();
+            if (selection && selection.rangeCount) {
+                range = selection.getRangeAt(0);
+                current = range.commonAncestorContainer;
+                $current = current.nodeName === '#text' || current.nodeName === 'BR' ? $(current).parent() : $(current);
+                caretPosition = MediumEditor.selection.getCaretOffsets(current).left;
+
+                // Is backspace pressed and caret is at the beginning of a paragraph, get previous element
+                if (e.which === 8 && caretPosition === 0) {
+                    $sibling = $current.prev();
+                    // Is del pressed and caret is at the end of a paragraph, get next element
+                } else if (e.which === 46 && caretPosition === $current.text().length) {
+                    $sibling = $current.next();
+                }
+
+                if ($sibling && $sibling.hasClass('medium-insert-embeds')) {
+                    embeds.push($sibling);
+                }
+
+                // If text is selected, find images in the selection
+                selectedHtml = MediumEditor.selection.getSelectionHtml(document);
+                if (selectedHtml) {
+                    $('<div></div>').html(selectedHtml).find('.medium-insert-embeds').each(function () {
+                        embeds.push($(this));
+                    });
+                }
+            }
+        }
+
+        if (embeds.length) {
+            for (i = 0; i < embeds.length; i++) {
                 e.preventDefault();
 
                 $('.medium-insert-embeds-toolbar, .medium-insert-embeds-toolbar2').remove();
 
                 $empty = $(this.templates['src/js/templates/core-empty-line.hbs']().trim());
-                $embed.before($empty);
-                $embed.remove();
+                embeds[i].before($empty);
+                embeds[i].remove();
 
                 // Hide addons
                 this.core.hideAddons();
@@ -585,6 +620,16 @@
                 this.core.moveCaret($empty);
                 this.core.triggerInput();
             }
+
+            // Hide addons
+            this.core.hideAddons();
+            if (!selectedHtml && $empty) {
+                e.preventDefault();
+                this.core.moveCaret($empty);
+            }
+
+            $('.medium-insert-embeds-toolbar, .medium-insert-embeds-toolbar2').remove();
+            this.core.triggerInput();
         }
     };
 

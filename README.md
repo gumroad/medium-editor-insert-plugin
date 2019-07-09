@@ -60,6 +60,7 @@ Notable components to look at in gumroad/web:
 
 ## Version history
 
+2.6.6 -- Fix the ability to delete an embed from the current caret position using the delete key
 2.6.5 -- Fix formatting for oembed captions
 2.6.4 -- Add hashCode util function and support onImageSelect callback on context.
 2.6.3 -- recalibrate custom css changes into this repo
