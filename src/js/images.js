@@ -793,7 +793,7 @@
 
    function hashCode(str) {
         var hash = 0;
-        if (str.length == 0) {
+        if (str.length === 0) {
             return hash;
         }
         for (var i = 0; i < str.length; i++) {
@@ -802,7 +802,7 @@
             hash = hash & hash; // Convert to 32bit integer
         }
         return hash;
-    };
+    }
 
 
 })(jQuery, window, document, MediumEditor.util);

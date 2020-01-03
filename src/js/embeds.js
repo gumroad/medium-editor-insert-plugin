@@ -567,7 +567,7 @@
     Embeds.prototype.removeEmbed = function (e) {
         var embeds = [],
             $selectedEmbed = this.$el.find('.medium-insert-embeds-selected'),
-            $parent, $empty, selection, range, current, caretPosition, $current, $sibling, selectedHtml, i;
+            $empty, selection, range, current, caretPosition, $current, $sibling, selectedHtml, i;
 
         if (e.which === 8 || e.which === 46) {
             if ($selectedEmbed.length) {

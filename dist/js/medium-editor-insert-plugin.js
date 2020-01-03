@@ -1,5 +1,5 @@
 /*! 
- * medium-editor-insert-plugin v2.6.6 - jQuery insert plugin for MediumEditor
+ * medium-editor-insert-plugin v2.6.7 - jQuery insert plugin for MediumEditor
  *
  * http://linkesch.com/medium-editor-insert-plugin
  * 
@@ -1396,7 +1396,7 @@ window["MediumInsert"] = this["MediumInsert"];
     Embeds.prototype.removeEmbed = function (e) {
         var embeds = [],
             $selectedEmbed = this.$el.find('.medium-insert-embeds-selected'),
-            $parent, $empty, selection, range, current, caretPosition, $current, $sibling, selectedHtml, i;
+            $empty, selection, range, current, caretPosition, $current, $sibling, selectedHtml, i;
 
         if (e.which === 8 || e.which === 46) {
             if ($selectedEmbed.length) {
@@ -2421,7 +2421,7 @@ window["MediumInsert"] = this["MediumInsert"];
 
    function hashCode(str) {
         var hash = 0;
-        if (str.length == 0) {
+        if (str.length === 0) {
             return hash;
         }
         for (var i = 0; i < str.length; i++) {
@@ -2430,7 +2430,7 @@ window["MediumInsert"] = this["MediumInsert"];
             hash = hash & hash; // Convert to 32bit integer
         }
         return hash;
-    };
+    }
 
 
 })(jQuery, window, document, MediumEditor.util);
