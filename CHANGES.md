@@ -1,6 +1,6 @@
 # 2.6.7 / 2020-01-03
 
-- Upgrade handlebars to 4.3.0 and recompile templates
+- Upgrade handlebars to ~4.3.0 and recompile templates
 
 # 2.6.6 / 2019-07-09
 
