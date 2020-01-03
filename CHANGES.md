@@ -1,3 +1,31 @@
+# 2.6.6 / 2019-07-09
+
+- Fix the ability to delete an embed from the current caret position using the delete key
+
+# 2.6.5 / 2019-07-09
+
+- Fix formatting for oembed captions
+
+# 2.6.4 / 2019-06-18
+
+- Add hashCode util function and support onImageSelect callback on context
+
+# 2.6.3 / 2019-05-30
+
+- Recalibrate custom css changes into this repo
+
+# 2.6.2 / 2019-05-28
+
+- Remove duplication of input field selector in buttons panel
+
+# 2.6.1 / 2019-05-24
+
+- Add a disable toolbar option for plugins and fix caret placement after oembed bug
+
+# 2.6.0 / 2019-05-22
+
+- Initial updates for Gumroad's implementation of inline images
+
 # 2.5.1 / 2019-01-24
 
 -   perf: use object url for image previews (#487)

@@ -57,13 +57,3 @@ $place.addClass(‘contains-image-‘ + tempImageClassName);
 Notable components to look at in gumroad/web:
 - WithRichText
 - WithRichTextImageUpload
-
-## Version history
-
-2.6.6 -- Fix the ability to delete an embed from the current caret position using the delete key
-2.6.5 -- Fix formatting for oembed captions
-2.6.4 -- Add hashCode util function and support onImageSelect callback on context.
-2.6.3 -- recalibrate custom css changes into this repo
-2.6.2 -- remove duplication of input field selector in buttons panel
-2.6.1 -- add a disable toolbar option for plugins and fix caret placement after oembed bug
-2.6.0 -- initial updates for Gumroad's implementation of inline images
