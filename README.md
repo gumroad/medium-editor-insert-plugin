@@ -23,7 +23,7 @@ While not very ideal, our only option was to fork this plugin.
 1) yarn install
 1) Make changes to /src/ files
 3) Run "grunt js" to compile files for distro
-4) Open a PR and request a codereview from someone in #engineering-chatter
+4) Open a PR and request a code review
 5) Once merged and ready to be updated, bump up the version number in package.json, git tag [VERSION_NUMBER], git push origin --tags
 6) Update the version number in gumroad/web's package.json
 
