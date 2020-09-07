@@ -1,5 +1,5 @@
 /*! 
- * medium-editor-insert-plugin v2.6.7 - jQuery insert plugin for MediumEditor
+ * medium-editor-insert-plugin v2.6.8 - jQuery insert plugin for MediumEditor
  *
  * http://linkesch.com/medium-editor-insert-plugin
  * 

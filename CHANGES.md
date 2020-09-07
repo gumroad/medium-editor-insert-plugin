@@ -1,5 +1,6 @@
-Unreleased
+# 2.6.8 / 2020-09-07
 
+- Upgrade handlebars to 4.7.6 and recompile templates
 - Bump lodash.template from 4.4.0 to 4.5.0
 - Bump jquery from 3.4.1 to 3.5.0
 - Bump node-sass from 4.12.0 to 4.13.1
