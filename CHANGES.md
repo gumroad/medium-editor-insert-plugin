@@ -1,3 +1,10 @@
+Unreleased
+
+- Bump lodash.template from 4.4.0 to 4.5.0
+- Bump jquery from 3.4.1 to 3.5.0
+- Bump node-sass from 4.12.0 to 4.13.1
+- Bump websocket-extensions from 0.1.3 to 0.1.4
+
 # 2.6.7 / 2020-01-03
 
 - Upgrade handlebars to ~4.3.0 and recompile templates
