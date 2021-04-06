@@ -28,17 +28,6 @@ module.exports = function (grunt) {
             }
         },
 
-        jscs: {
-            src: [
-                'src/js/*.js',
-                'spec/**/*.js',
-                '!src/js/templates.js'
-            ],
-            options: {
-                config: '.jscsrc'
-            }
-        },
-
         jshint: {
             options: {
                 jshintrc: true
@@ -154,7 +143,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('test', ['jscs', 'jshint', 'jasmine']);
+    grunt.registerTask('test', ['jshint', 'jasmine']);
     grunt.registerTask('js', ['handlebars', 'concat', 'uglify']);
     grunt.registerTask('css', ['sass', 'autoprefixer', 'csso', 'usebanner']);
     grunt.registerTask('default', ['js', 'css']);
