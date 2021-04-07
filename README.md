@@ -25,7 +25,8 @@ While not very ideal, our only option was to fork this plugin.
 3) Run `grunt` to compile files for distribution
 4) Open a PR and request a code review
 5) Once merged and ready to be updated, bump up the version number in package.json, git tag [VERSION_NUMBER], git push origin --tags
-6) Update the version number in gumroad/web's package.json
+6) Write a changelog in CHANGES.md
+7) Update the version number in gumroad/web's package.json
 
 ## What are the main changes we had to make?
 

@@ -1,3 +1,20 @@
+# 2.6.9 / 2021-04-07
+
+- New uglified js file
+- Bump grunt-contrib-uglify from 4.0.1 to 5.0.1
+- Bump all-contributors-cli from 5.11.0 to 6.20.0
+- Upgrade grunt-contrib-jasmine
+- Remove grunt-jscs as unmaintained
+- Bump handlebars from 4.7.6 to 4.7.7
+- Bump node-sass from 4.13.1 to 5.0.0
+- Bump grunt-sass from 3.0.2 to 3.1.0
+- Bump grunt-contrib-jshint from 2.1.0 to 3.0.0
+- Bump grunt from 1.0.4 to 1.3.0
+- Bump jquery from 3.5.0 to 3.6.0
+- Create dependabot.yml
+- Bump yargs-parser from 5.0.0 to 5.0.1
+- Bump y18n from 3.2.1 to 3.2.2
+
 # 2.6.8 / 2020-09-07
 
 - Upgrade handlebars to 4.7.6 and recompile templates
