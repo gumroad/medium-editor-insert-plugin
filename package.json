@@ -46,7 +46,7 @@
     "grunt-banner": "^0.6.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-handlebars": "^2.0.0",
-    "grunt-contrib-jasmine": "^2.2.0",
+    "grunt-contrib-jasmine": "^3.0.0",
     "grunt-contrib-jshint": "^3.0.0",
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "^1.1.0",
